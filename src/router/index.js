@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/views/HelloWorld'
+import Admin from '@/views/Admin'
 import Home from '@/views/Home'
 
 Vue.use(Router)
@@ -8,13 +8,13 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/qwer',
-      name: 'HelloWorld',
-      component: HelloWorld
+      path: '/',
+      name: 'Admin',
+      component: Admin
     },
     {
-      path: '/',
-      name: 'Home',
+      path: '/user',
+      name: 'user',
       component: Home
     }
   ]

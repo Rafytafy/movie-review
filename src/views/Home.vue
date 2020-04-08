@@ -1,7 +1,5 @@
 <template> 
 <div>
-  <button type="=button" v-on:click=postMessage()>Send message to python</button>
-  <span v-if: connected> {{message}}</span>
   <div id="table">
 
     <b-table class="test"
@@ -31,7 +29,6 @@ import axios from 'axios';
       return {
         path: 'http://localhost:5000',
         connected:false,
-        message:'',
         perPage: 3,
         currentPage: 1,
         movies: [
@@ -68,9 +65,6 @@ import axios from 'axios';
         });
       }
     },
-    created(){
-      this.getMessage();
-    },
     computed: {
       rows() {
         return this.movies.length
@@ -80,10 +74,26 @@ import axios from 'axios';
 </script>
 
 <style>
+
+  .router-link-active,
+  .router-link-exact-active,
+  .router-link-active:hover,
+  .router-link-exact-active:hover{
+   color: white;
+   cursor: pointer;
+ }
+
   #table {
-    border: 5px solid #EEE;
+    border: 5px solid #414141;
     width: 1250px;
     margin-left:auto;
     margin-right:auto;
+    background-color: #414141;
+  }
+ td,th{
+    color: white;
+  }
+  body{
+    background-color:#414141
   }
 </style>
