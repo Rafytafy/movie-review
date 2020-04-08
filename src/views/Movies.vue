@@ -7,7 +7,7 @@
     >
     <template v-slot:cell(movie)="data">
         <!-- `data.value` is the value after formatted by the Formatter -->
-        <router-link :to="`/MovieInfo/${data.value}`">
+        <router-link :to="`/movieInfo/${data.value}`">
           {{ data.value }}
         </router-link>
       </template>
