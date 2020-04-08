@@ -1,4 +1,4 @@
-<template> 
+<template>
 <div>
   <div id="table">
 
@@ -9,13 +9,6 @@
       :current-page="currentPage">
       </b-table>
 
-    <b-pagination
-      class="pagination"
-      v-model="currentPage"
-      :total-rows="rows"
-      :per-page="perPage"
-      aria-controls="table"
-    ></b-pagination>
   </div>
 </div>
 </template>
