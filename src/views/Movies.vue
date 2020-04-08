@@ -5,6 +5,12 @@
     :per-page="perPage"
     :current-page="currentPage"
     >
+    <template v-slot:cell(movie)="data">
+        <!-- `data.value` is the value after formatted by the Formatter -->
+        <router-link :to="`/MovieInfo/${data.value}`">
+          {{ data.value }}
+        </router-link>
+      </template>
     </b-table>
 
     <b-pagination
