@@ -2,8 +2,8 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link>
-      <router-link to="/qwer">Movies</router-link>
-      <router-link to="/">Review</router-link>
+      <router-link to="/movies">Movies</router-link>
+      <router-link to="">Review</router-link>
     </div>
     <img src="./assets/logo.png">
     <router-view/>
