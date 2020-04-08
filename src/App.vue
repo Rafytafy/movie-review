@@ -9,7 +9,6 @@
     <router-view/>
   </div>
 </template>
-npm start
 <script>
 export default {
   name: 'App'
