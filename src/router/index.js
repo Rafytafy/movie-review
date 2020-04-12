@@ -1,20 +1,24 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/views/HelloWorld'
+import Admin from '@/views/Admin'
 import Home from '@/views/Home'
 import Review from '@/views/Review'
+import Movies from '@/views/Movies'
+import MovieInfo from '@/views/MovieInfo'
+
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/qwer',
-      name: 'HelloWorld',
-      component: HelloWorld
+      path: '/',
+      name: 'Admin',
+      component: Admin
     },
     {
-      path: '/',
+      path: '/user',
+      name: 'user',
       name: 'Home',
       component: Home
     },
@@ -22,6 +26,18 @@ export default new Router({
       path: '/review',
       name: 'Review',
       component: Review
+    },
+    {
+      path: '/movies',
+      name: 'Movies',
+      component: Movies
+    },
+    {
+      path: '/movieInfo/:movie',
+      name: 'MovieInfo',
+      component: MovieInfo
+
     }
+
   ]
 })
