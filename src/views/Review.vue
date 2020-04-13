@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-form @submit="onSubmit" @reset="onReset" v-if="show">
+
     <h2><em>Review Page</em></h2>
     <br>
     <h3>Movie title</h3>
@@ -19,9 +19,8 @@
     v-model="reviewText"
   ></b-form-textarea>
   <br>
-  <b-button> Submit </b-button>
-  <b-button class="reset" type="reset" variant="danger"> Reset </b-button>
-  </b-form>
+  <button @click="onSubmit"> Submit </button>
+  <button class="reset" @click="onReset" > Reset </button>
   </div>
 </template>
 
@@ -29,7 +28,6 @@
   export default {
     data() {
       return {
-        show: true,
         ratingSelected: null,
         movie: null,
         reviewText: null,
@@ -41,19 +39,21 @@
           { value: 4, text: 'Above Average(4)'},
           { value: 5, text: 'Excellent!(5)' }
         ],
+        //the movies array will hold the movies contating the matching starting values
+        //Ex:Input = S
+        //movies[] = ["Scarface", "Scary Movie", "School of Rock"]
+        //limit 5 movies 
         movies: ['Pulp Fiction', 'The GodFather', 'Scarface', 'Forest Gump']
       }
     },
     methods: {
       onReset(evt){
-        evt.preventDefault()
         this.ratingSelected = null
         this.movie = null
         this.reviewText = null
-        this.show = false
-        this.$nextTick(() => {
-          this.show = true
-        })
+      },
+      onSubmit(evt){
+        //Code to transfer form data elements to database (movie, ratingSelected, reviewText)
       }
     }
 
