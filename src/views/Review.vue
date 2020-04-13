@@ -1,7 +1,24 @@
 <template>
   <div>
-    <b-form-input id="myDropdown" class="movie-input" v-model="text" v-on:click= "showMovies()" v-on:keyup.enter="searchMovie('Hello')" placeholder="Enter name of movie"></b-form-input>
-    <div class="mt-2">Value: {{ text }}</div>
+    <h2><em>Review Page</em></h2>
+    <br>
+    <h3>Movie title</h3>
+    <b-form-input class="movie-entry" list="input-list" id="input-with-list"></b-form-input>
+    <b-form-datalist id="input-list" :options="movies"></b-form-datalist>
+    <br> <br> <br>
+    <h3>Rating</h3>
+    <b-form-select class="movie-rating" v-model="selected" :options="options"></b-form-select>
+    <br> <br> <br> <br>
+    <h3>Review</h3>
+    <b-form-textarea
+    id="textarea-rows"
+    class="textarea"
+    placeholder="Tall textarea"
+    rows="8"
+  ></b-form-textarea>
+  <br>
+  <button> Submit </button>
+  <button> Reset </button>
   </div>
 </template>
 
@@ -9,24 +26,10 @@
   export default {
     data() {
       return {
-        text: '',
-        test:"",
-        movies: [
-          { movie: 'Pulp Fiction', genre: 'Drama/Crime', year: 1994, score: 0 },
-          { movie: 'The GodFather', genre: 'Drama/Crime', year: 1972, score: 0 },
-          { movie: 'Scarface', genre: 'Drama/Crime', year: 1983, score: 0 },
-          { movie: 'Forest Gump', genre: 'Drama/Magical Realism', year: 1994, score: 0 }
-        ]
+        movies: ['Pulp Fiction', 'The GodFather', 'Scarface', 'Forest Gump']
       }
     },
-    methods: {
-      showMovies(){
-        document.getElementById("myDropdown").classList.toggle("show");
-        this.text= "FUCK"
-      },
-      searchMovie(t){
-      }
-    }
+
   }
 </script>
 
@@ -35,9 +38,32 @@
   div {
     text-align: center;
   }
-  .movie-input {
+  button{
+      border:5px solid transparent;
+      border-radius: 10px;
+      color:white;
+      font-size: 25px;
+      padding:10px;
+      background-color:#af0404;
+      margin-left:auto;
+      margin-right:auto;
+
+  }
+
+  button:hover{
+      opacity: .5;
+  }
+   .movie-entry, .movie-rating {
     width: 500px;
     margin-left:auto;
     margin-right:auto;
   }
+
+  .textarea
+  {
+    width: 1000px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+
 </style>

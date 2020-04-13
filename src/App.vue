@@ -4,7 +4,7 @@
       <router-link to="/">Login</router-link>
       <router-link to="/user" class="router-link-active">Home</router-link>
       <router-link to="/movies" class="router-link-active">Movies</router-link>
-      <router-link to="">Review</router-link>
+      <router-link to="/review">Review</router-link>
     </div>
     <router-view/>
   </div>
