@@ -1,7 +1,10 @@
 import sqlite3 
+import os, sys
+
+db_filepath=os.path.join(sys.path[0], "Movies.db")
 
 def db_init():
-    connection = sqlite3.connect("./backend/Movies.db") 
+    connection = sqlite3.connect(db_filepath) 
 
     # cursor  
     crsr = connection.cursor() 
@@ -9,19 +12,19 @@ def db_init():
     # creating the tables
     # reviews will store a dict(json object) that contains all the movies this person has reviewed
     # movies will store a dict that contains all the movies this person has reviewed.
-    create_table="""CREATE_TABLE users(
+    create_table="""CREATE TABLE IF NOT EXISTS users(
         user_name VARCHAR(20) PRIMARY KEY,
         reviews,
         movies,
         FOREIGN KEY(reviews) REFERENCES reviews(movie_name),
         FOREIGN KEY(movies) REFERENCES movies(movie_name)
-    )"""
+    );"""
     crsr.execute(create_table)
 
     # comments will store a dict of all the users and their corresponding comments they posted. 
     # form will look like->
     # comments{ user: {date: 04-07-2018, text: this movie was trash. }}
-    create_table="""CREATE_TABLE reviews(
+    create_table="""CREATE TABLE IF NOT EXISTS reviews(
         movie_name VARCHAR PRIMARY KEY,
         review_text VARCHAR,
         comments VARCHAR,
@@ -29,26 +32,26 @@ def db_init():
         genre VARCHAR,
         year DATE,
         author VARCHAR,
-        date_posted DATE
-        FOREIGN KEY(comments) REFERENCES comments(comment_text),
-        )"""
+        date_posted DATE,
+        FOREIGN KEY(comments) REFERENCES comments(comment_text)
+        );"""
     crsr.execute(create_table)
 
-    create_table="""CREATE_TABLE comments(
+    create_table="""CREATE TABLE IF NOT EXISTS comments(
         author VARCHAR,
         movie VARCHAR PRIMARY KEY,
         comment_text VARCHAR,
         date_posted DATE,
         FOREIGN KEY(author) REFERENCES users(user_name)
-        )"""
+        );"""
     crsr.execute(create_table)
 
-    create_table="""CREATE_TABLE movies(
+    create_table="""CREATE TABLE IF NOT EXISTS movies(
         movie_name PRIMARY KEY,
         genre VARCHAR,
         year DATE,
         FOREIGN KEY(movie_name) REFERENCES users(movie_name)
-    )"""
+    );"""
     crsr.execute(create_table)
     connection.commit()
     connection.close()
@@ -68,7 +71,7 @@ def db_init():
 #   }
 # }
 
-def db_update():
+def db_update(obj):
     pass
 
 # The search function will parse the incoming json blob to determine the location of the lookup info, then pass 
@@ -84,9 +87,69 @@ def db_update():
 #   }
 # }
 # the function will pull the row and then parse that as a dict and return the relevant info.
-def db_search():
+def db_search(obj):
     pass
-  
+
+# This will take a json object with the header 'insert', locate the table and insert all values in their
+# respective spots.
+# json is of form-> 
+# {
+# header:'insert',
+# table: table_name,
+#  content':
+#  {
+#   'userName': 'here', 
+#   'reviews': None,
+#   'movies': None}
+# }
+def db_insert(obj):
+    connection = sqlite3.connect(db_filepath) 
+
+    # cursor  
+    crsr = connection.cursor()
+    if obj['table'] == 'users':
+
+        tbl_insrt = [
+            (
+                obj['content']['userName'],
+                obj['content']['reviews'],
+                obj['content']['movies']
+                
+            ) 
+
+        ]
+        print(tbl_insrt)
+        crsr.executemany("INSERT INTO users (user_name,reviews,movies) VALUES (?,?,?);", tbl_insrt)   
+        for row in crsr.execute("SELECT * FROM users"):
+            print(row)
+
+    if obj['table'] == 'movies':
+        pass
+
+    if obj['table'] == 'reviews':
+        pass
+
+    if obj['table'] == 'comments':
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   ### Useful testing and pulling code ###
 

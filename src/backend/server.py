@@ -1,6 +1,8 @@
 from flask import Flask, render_template,jsonify,request
 from flask_socketio import SocketIO, send, emit
 from flask_cors import CORS,cross_origin
+import database as db
+import os
 
 # Create the application to serve.
 app = Flask(__name__)
@@ -23,10 +25,23 @@ CORS(app,resources={r'/*': {'origins':'*'}})
 
 @app.route('/', methods=['GET','POST','DELETE','MODIFY']) # we'll need to define this route as '*' later on for more views.
 def handle_requests():
+    db.db_init()
     if request.method == 'POST':
         print(request.json)
+        
+        if  request.json['header'] == 'insert':
+            db.db_insert(request.json)
+
+        if request.json['header']  == 'update':
+            db.db_update(request.json)
+
         return str(request.method)
+
     if request.method == 'GET':
+
+        if request.json['header']  == 'search':
+            db.db_search
+
         return str(request.method)
 
 # This actually runs the server, it's on port 5000, which is a separate port from the vue frontend, since we can't run
