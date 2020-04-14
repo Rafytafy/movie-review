@@ -4,7 +4,7 @@
       <router-link to="/">Login</router-link>
       <router-link to="/user" class="router-link-active">Home</router-link>
       <router-link to="/movies" class="router-link-active">Movies</router-link>
-      <router-link to="">Review</router-link>
+      <router-link to="/review">Review</router-link>
     </div>
     <router-view/>
   </div>
@@ -17,9 +17,9 @@ export default {
 
 <style>
 /* general styling tips for this project */
-/*  The colors we will use are: 
+/*  The colors we will use are:
 a grey -> #414141,
-a dark grey -> #252525, 
+a dark grey -> #252525,
 a red -> #ff0000,
 and a dark red -> #af0404.
  all the text we display should be specified as 'white'.
@@ -43,4 +43,3 @@ body{
   background-color: #414141;
 }
 </style>
-
