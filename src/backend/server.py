@@ -3,7 +3,6 @@ from flask_socketio import SocketIO, send, emit
 from flask_cors import CORS,cross_origin
 import database as db
 import os
-
 # Create the application to serve.
 app = Flask(__name__)
 socketio = SocketIO(app)
@@ -26,11 +25,12 @@ CORS(app,resources={r'/*': {'origins':'*'}})
 @app.route('/', methods=['GET','POST','DELETE','MODIFY']) # we'll need to define this route as '*' later on for more views.
 def handle_requests():
     db.db_init()
+    front_end_path='http://localhost:8080'
     if request.method == 'POST':
         print(request.json)
         
         if  request.json['header'] == 'insert':
-            db.db_insert(request.json)
+            return db.db_insert(request.json)
 
         if request.json['header']  == 'update':
             db.db_update(request.json)

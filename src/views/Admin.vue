@@ -11,22 +11,31 @@
         <button @click="signIn()">Pick a user</button>
       </span>
     </div>
+
     <div id="createUser" v-if="this.mode=='createUser'">
-      <div>
-        <header>
-          <em>Register a username</em>
-        </header>
-        <span id="input">
-          <label for="username">Username</label>
-          <input
-            id="forminput"
-            type="text"
-            placeholder="enter your desired name"
-            @keyup.enter="newUser()"
-          />
-        </span>
-        <button @click="newUser()" class="formbtn">create user</button>
-      </div>
+      <header>
+        <em>Register a username</em>
+      </header>
+      <span id="input">
+        <label for="username">Username</label>
+        <input
+          id="forminput"
+          type="text"
+          placeholder="enter your desired name"
+          @keyup.enter="newUser()"
+        />
+      </span>
+      <button @click="newUser()" class="formbtn">create user</button>
+    </div>
+
+    <div id="signIn" v-if="this.mode =='signIn'">
+      <label for="user select">Select a user from this list</label>
+      <br />
+      <span v-for="user in userList " v-bind:user="userList" v-bind:key="user">
+        <hr />
+        <button class="formbtn" @click="selectUser(user)">{{user.userName}}</button>
+        <hr />
+      </span>
     </div>
     <br />
     <br />
@@ -57,20 +66,35 @@ export default {
         userName: "",
         reviews: null,
         movies: null
-      }
+      },
+      userList: [
+      ],
+
+      backendData:{}
     };
   },
   methods: {
     createUser() {
       this.mode = "createUser";
     },
-    signIn() {},
+    signIn() {
+      this.mode = "signIn";
+    },
+
     newUser() {
+        // here we get the input from the text boxes and then send it to the backend. We reset mode to Admin so the
+        // admin can create more users or sign in to any existing user.
       this.currUser.userName = document.getElementById("forminput").value;
       document.getElementById("forminput").value = "";
-      console.log(this.currUser.userName);
       this.dbInsert(this.currUser);
+      this.mode = "admin";
     },
+
+    selectUser(user) {
+      this.currUser = user;
+      console.log(this.currUser)
+    },
+    showUsers() {},
     //this takes an object and wraps it in a larger JSON to send to the db.
     dbInsert(obj) {
       axios({
@@ -80,12 +104,24 @@ export default {
           "Content-type": "application/json"
         },
         data: {
-            header: "insert",
-            table: "users",
-            content: obj 
+          header: "insert",
+          table: "users",
+          content: obj
         }
       }).then(res => {
-        console.log(res);
+
+          // this gets the response from server.py, which is the entire users table
+          // it then chooses the table entities as rows (username, movies, reviews) and pushes them into the backendData
+          // object. If you look at the database.py function 'db_insert' you'll see that I created an
+          // array of dicts (json object)s which represent each user and their reviews and movies. Here, we iterate
+          // through that and choose each user and their corresponding data to be added to the userList, which is then
+          // displayed once the user clicks the select user button.
+
+          this.backendData = res.data.content;
+          this.userList=[];
+          for(let item in this.backendData){
+              this.userList.push(this.backendData[item]);
+          }
       });
     }
   }

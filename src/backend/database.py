@@ -119,9 +119,17 @@ def db_insert(obj):
 
         ]
         print(tbl_insrt)
-        crsr.executemany("INSERT INTO users (user_name,reviews,movies) VALUES (?,?,?);", tbl_insrt)   
-        for row in crsr.execute("SELECT * FROM users"):
-            print(row)
+        crsr.executemany("INSERT INTO users (user_name,reviews,movies) VALUES (?,?,?);", tbl_insrt)  
+        crsr.execute("""SELECT * FROM users""")
+        ans=crsr.fetchall()
+        obj['header'] = 'emit'
+        obj['content'] = [] #create a list to be filled with dictionaries that correspond to user entries in the table.
+        #loop through the table and update the keys in the package to resend to the front end.
+        for key in ans:
+            obj['content'].append({'userName':key[0],'review':key[1],'movies':key[2]})
+        print(obj)
+        # we return the modified object to be sent to the frontend in response. Look at admin.vues axios post response.
+        return obj 
 
     if obj['table'] == 'movies':
         pass
@@ -131,6 +139,9 @@ def db_insert(obj):
 
     if obj['table'] == 'comments':
         pass
+    
+    # connection.commit()
+    connection.close()
 
 
 
