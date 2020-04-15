@@ -26,7 +26,7 @@
 
 <script>
   export default {
-    name: 'create-review-comp'
+    name: 'create_review_comp',
     data() {
       return {
         ratingSelected: null,
