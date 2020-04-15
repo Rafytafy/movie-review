@@ -26,6 +26,7 @@
 
 <script>
   export default {
+    name: 'create-review-comp'
     data() {
       return {
         ratingSelected: null,
@@ -42,7 +43,7 @@
         //the movies array will hold the movies contating the matching starting values
         //Ex:Input = S
         //movies[] = ["Scarface", "Scary Movie", "School of Rock"]
-        //limit 5 movies 
+        //limit 5 movies
         movies: ['Pulp Fiction', 'The GodFather', 'Scarface', 'Forest Gump']
       }
     },
