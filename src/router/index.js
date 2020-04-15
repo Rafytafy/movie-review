@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Admin from '@/views/Admin'
 import Home from '@/views/Home'
-import Review from '@/views/Review'
 import Movies from '@/views/Movies'
 import MovieInfo from '@/views/MovieInfo'
 
@@ -22,12 +21,6 @@ export default new Router({
       name: 'User',
       props:true,
       component: Home
-    },
-    {
-      path: '/review',
-      name: 'Review',
-      props:true,
-      component: Review
     },
     {
       path: '/movies',

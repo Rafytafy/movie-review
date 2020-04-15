@@ -1,72 +1,95 @@
 <template>
-<div>
-  <div id="table">
-      <h2>
-        Welcome,{{this.curr_user.userName}}
-      </h2>
+  <div>
+    <h2>
+      <em>Home</em>
+    </h2>
+    <div id="Home" v-if="this.mode == 'Home'">
+      <span>
+        <button class="home-btn" @click="createReview()">Create a Review</button>
+        <button class="home-btn" @click="editReview()">Edit/Delete Review</button>
+      </span>
+    </div>
+    <div id="admin" v-if="this.mode == 'createReview'">
+      <span>
+        <createReviewComp />
+        <button class="back-btn" @click="home()">Back</button>
+      </span>
+    </div>
+    <div id="admin" v-if="this.mode == 'editReview'">
+      <span></span>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-import axios from 'axios';
-
-  export default {
-    name: "User",
-    data() {
-      return {
-        path: 'http://localhost:5000',
-        perPage: 3,
-        currentPage: 1,
-      }
-    },
-    props:['curr_user'],
-    methods:{
-
-      updateMovies(){
-        axios({method:'post',
-          url:this.path,
-           headers: {
-    'Content-type': 'application/json'
+import axios from "axios";
+import createReviewComp from "@/components/Review";
+export default {
+  name: "Home",
+  components: {
+    createReviewComp
   },
-  data: {
-    movies: this.movies
-  }
-
-        }).then((res)=>{
-          console.log(res);
-        })
-      },
+  data() {
+    return {
+      path: "http://localhost:5000",
+      mode: "Home"
+    };
+  },
+  props: ["curr_user"],
+  methods: {
+    createReview() {
+      this.mode = "createReview";
     },
-    computed: {
-      rows() {
-        return this.movies.length
-      }
+    editReview() {
+      this.mode = "editReview";
+    },
+    home() {
+      this.mode = "Home";
+    },
+    postMessage() {
+      axios({
+        method: "post",
+        url: this.path,
+        headers: {
+          "Content-type": "application/json"
+        },
+        data: {}
+      }).then(res => {
+        console.log(res);
+      });
     }
   }
+};
 </script>
 
 <style>
+.router-link-active,
+.router-link-exact-active,
+.router-link-active:hover,
+.router-link-exact-active:hover {
+  color: white;
+  cursor: pointer;
+}
 
-  .router-link-active,
-  .router-link-exact-active,
-  .router-link-active:hover,
-  .router-link-exact-active:hover{
-   color: white;
-   cursor: pointer;
- }
+.home-btn {
+  border: 5px solid transparent;
+  width: 250px;
+  height: 200px;
+  border-radius: 10px;
+  color: white;
+  font-size: 25px;
+  padding: 10px;
+  background-color: #af0404;
+  margin-left: auto;
+  margin-right: 10px;
+}
+.back-btn {
+  float: right;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
 
-  #table {
-    border: 5px solid #414141;
-    width: 1250px;
-    margin-left:auto;
-    margin-right:auto;
-    background-color: #414141;
-  }
- td,th{
-    color: white;
-  }
-  body{
-    background-color:#414141
-  }
+body {
+  background-color: #414141;
+}
 </style>
