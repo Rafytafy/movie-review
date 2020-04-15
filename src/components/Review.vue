@@ -4,12 +4,23 @@
     <h2><em>Review Page</em></h2>
     <br>
     <h3>Movie title</h3>
-    <b-form-input class="movie-entry" list="input-list" id="input-with-list" v-model="movie" ></b-form-input>
+    <b-form-input class="movie-entry" list="input-list" id="input-with-list" v-model="movie" placeholder="Enter title of movie" ></b-form-input>
     <b-form-datalist id="input-list" :options="movies"></b-form-datalist>
-    <br> <br> <br>
+    <br> <br>
+
+    <div class="genre-year">
+      <label for="genre">Genre:</label>
+      <b-form-input id="genre" v-model="genre" placeholder="Enter genre of movie"></b-form-input>
+      <br>
+      <label for="year">Year:</label>
+      <b-form-input id="year" v-model="year" placeholder="Enter year of movie"></b-form-input>
+    </div>
+    <br><br>
+
     <h3>Rating</h3>
     <b-form-select class="movie-rating" v-model="ratingSelected" :options="rating"></b-form-select>
     <br> <br> <br> <br>
+
     <h3>Review</h3>
     <b-form-textarea
     id="textarea-rows"
@@ -29,8 +40,11 @@
     name: 'create_review_comp',
     data() {
       return {
-        ratingSelected: null,
+        path: "http://localhost:5000",
         movie: null,
+        genre: null,
+        year: null,
+        ratingSelected: null,
         reviewText: null,
         rating: [
           { value: null, text: 'Please select an option' },
@@ -44,7 +58,21 @@
         //Ex:Input = S
         //movies[] = ["Scarface", "Scary Movie", "School of Rock"]
         //limit 5 movies
-        movies: ['Pulp Fiction', 'The GodFather', 'Scarface', 'Forest Gump']
+        movieData:{
+          movieTitle: null,
+          movieGenre: null,
+          movieYear: null
+        },
+        reviewData: {
+          movieTitle: null,
+          movieReview: null,
+          movieComments: null,
+          movieRating: null,
+          movieGenre: null,
+          movieYear: null,
+          movieAuthor: null,
+          movieDate: null
+        }
       }
     },
     methods: {
@@ -52,9 +80,51 @@
         this.ratingSelected = null
         this.movie = null
         this.reviewText = null
+        this.year = null
+        this.genre = null
       },
       onSubmit(evt){
-        //Code to transfer form data elements to database (movie, ratingSelected, reviewText)
+        //Start by inserting into movie table
+        //First fill movieData obj info
+        this.movieData.movieTitle = this.movie
+        this.movieData.movieGenre = this.genre
+        this.movieData.movieYear = this.year
+        axios({
+          method: "post",
+          url: this.path,
+          headers: {
+            "Content-type": "application/json"
+          },
+          data: {
+            header: "insert",
+            table: "movies",
+            content: movieData
+          }
+        })
+        //next insert into review table
+        //fill reviewData info
+        this.reviewData.movieTitle = this.movies
+        this.reviewData.movieReview = this.reviewText
+        this.reviewData.movieComments = null
+        this.reviewData.movieRating = this.ratingSelected
+        this.reviewData.movieGenre = this.genre
+        this.reviewData.movieYear = this.year
+        //How do I access the current user?
+        this.reviewData.movieAuthor =
+
+        axios({
+          method: "post",
+          url: this.path,
+          headers: {
+            "Content-type": "application/json"
+          },
+          data: {
+            header: "insert",
+            table: "reviews",
+            content: reviewData
+          }
+        })
+
       }
     }
 
@@ -63,6 +133,7 @@
 
 <style>
 
+  #
   div {
     text-align: center;
   }
@@ -94,6 +165,10 @@
   }
   .reset {
     background-color:#252525;
+  }
+  .genre-year {
+    width: 300px;
+    margin: 0 auto;
   }
 
 </style>
