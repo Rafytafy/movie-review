@@ -67,23 +67,23 @@ export default {
         reviews: null,
         movies: null
       },
-      userList: [
-      ],
+      userList: [],
 
-      backendData:{}
+      backendData: {}
     };
   },
   methods: {
     createUser() {
       this.mode = "createUser";
     },
+
     signIn() {
       this.mode = "signIn";
     },
 
     newUser() {
-        // here we get the input from the text boxes and then send it to the backend. We reset mode to Admin so the
-        // admin can create more users or sign in to any existing user.
+      // here we get the input from the text boxes and then send it to the backend. We reset mode to Admin so the
+      // admin can create more users or sign in to any existing user.
       this.currUser.userName = document.getElementById("forminput").value;
       document.getElementById("forminput").value = "";
       this.dbInsert(this.currUser);
@@ -91,8 +91,12 @@ export default {
     },
 
     selectUser(user) {
+      // after we select a user, we want to change the mode to user and then redirect to the home page.
+
       this.currUser = user;
-      console.log(this.currUser)
+      this.$emit("user-selected", user);
+      this.mode = "user";
+      this.$router.push('/user')
     },
     showUsers() {},
     //this takes an object and wraps it in a larger JSON to send to the db.
@@ -109,19 +113,18 @@ export default {
           content: obj
         }
       }).then(res => {
+        // this gets the response from server.py, which is the entire users table
+        // it then chooses the table entities as rows (username, movies, reviews) and pushes them into the backendData
+        // object. If you look at the database.py function 'db_insert' you'll see that I created an
+        // array of dicts (json object)s which represent each user and their reviews and movies. Here, we iterate
+        // through that and choose each user and their corresponding data to be added to the userList, which is then
+        // displayed once the user clicks the select user button.
 
-          // this gets the response from server.py, which is the entire users table
-          // it then chooses the table entities as rows (username, movies, reviews) and pushes them into the backendData
-          // object. If you look at the database.py function 'db_insert' you'll see that I created an
-          // array of dicts (json object)s which represent each user and their reviews and movies. Here, we iterate
-          // through that and choose each user and their corresponding data to be added to the userList, which is then
-          // displayed once the user clicks the select user button.
-
-          this.backendData = res.data.content;
-          this.userList=[];
-          for(let item in this.backendData){
-              this.userList.push(this.backendData[item]);
-          }
+        this.backendData = res.data.content;
+        this.userList = [];
+        for (let item in this.backendData) {
+          this.userList.push(this.backendData[item]);
+        }
       });
     }
   }

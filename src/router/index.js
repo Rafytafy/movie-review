@@ -14,27 +14,31 @@ export default new Router({
     {
       path: '/',
       name: 'Admin',
+      props:true,
       component: Admin
     },
     {
       path: '/user',
-      name: 'user',
-      name: 'Home',
+      name: 'User',
+      props:true,
       component: Home
     },
     {
       path: '/review',
       name: 'Review',
+      props:true,
       component: Review
     },
     {
       path: '/movies',
       name: 'Movies',
+      props:true,
       component: Movies
     },
     {
       path: '/movieInfo/:movie',
       name: 'MovieInfo',
+      props:true,
       component: MovieInfo
 
     }

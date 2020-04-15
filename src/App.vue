@@ -6,13 +6,23 @@
       <router-link to="/movies" class="router-link-active">Movies</router-link>
       <router-link to="/review">Review</router-link>
     </div>
-    <router-view/>
+      <router-view v-on:user-selected="onSelect" v-bind:curr_user="userData"></router-view>
   </div>
 </template>
 <script>
 export default {
-  name: 'App'
+  name: "App",
+  data: function() {
+    return {
+      userData: ""
+    };
+  },
+  methods: {
+    onSelect(user) {
+      this.userData = user;
+    }
 }
+};
 </script>
 
 <style>
@@ -24,22 +34,22 @@ a red -> #ff0000,
 and a dark red -> #af0404.
  all the text we display should be specified as 'white'.
 */
-  .router-link-active,
-  .router-link-exact-active,
-  .router-link-active:hover,
-  .router-link-exact-active:hover{
-   color: white;
-   cursor: pointer;
- }
+.router-link-active,
+.router-link-exact-active,
+.router-link-active:hover,
+.router-link-exact-active:hover {
+  color: white;
+  cursor: pointer;
+}
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: white;
   margin-top: 60px;
 }
-body{
+body {
   background-color: #414141;
 }
 </style>
