@@ -1,38 +1,54 @@
 <template>
 <div>
-  <div id="table">
+  <h2>
+    <em>Home</em>
+  </h2>
+  <div id="Home" v-if="this.mode == 'Home'">
+    <span>
+      <button class="home-btn" @click="createReview()">Create a Review</button>
+      <button class="home-btn" @click="editReview()">Edit/Delete Review</button>
+    </span>
+  </div>
+  <div id="admin" v-if="this.mode == 'createReview'">
+    <span>
+      <createReviewComp />
+      <button class="back-btn" @click="home()">Back</button>
+    </span>
+  </div>
+  <div id="admin" v-if="this.mode == 'editReview'">
+    <span>
 
-    <b-table class="test"
-     striped hover
-      :items="movies"
-      :per-page="perPage"
-      :current-page="currentPage">
-      </b-table>
-
+    </span>
   </div>
 </div>
 </template>
 
 <script>
 import axios from 'axios';
-
+import createReviewComp from '@/components/Review'
   export default {
     name: "Home",
+    components: {
+      createReviewComp
+    },
     data() {
       return {
         path: 'http://localhost:5000',
         connected:false,
-        perPage: 3,
-        currentPage: 1,
-        movies: [
-          { movie: 'Pulp Fiction', genre: 'Drama/Crime', year: 1994, score: 0 },
-          { movie: 'The GodFather', genre: 'Drama/Crime', year: 1972, score: 0 },
-          { movie: 'Scarface', genre: 'Drama/Crime', year: 1983, score: 0 },
-          { movie: 'Forest Gump', genre: 'Drama/Magical Realism', year: 1994, score: 0 }
-        ]
+        mode: 'Home'
+
       }
     },
     methods:{
+      createReview() {
+        this.mode = "createReview"
+      },
+      editReview() {
+        this.mode = "editReview"
+      },
+      home(){
+        this.mode = 'Home'
+      },
       postMessage(){
         axios({method:'post',
           url:this.path,
@@ -58,11 +74,6 @@ import axios from 'axios';
         });
       }
     },
-    computed: {
-      rows() {
-        return this.movies.length
-      }
-    }
   }
 </script>
 
@@ -76,16 +87,24 @@ import axios from 'axios';
    cursor: pointer;
  }
 
-  #table {
-    border: 5px solid #414141;
-    width: 1250px;
-    margin-left:auto;
-    margin-right:auto;
-    background-color: #414141;
-  }
- td,th{
-    color: white;
-  }
+ .home-btn{
+   border: 5px solid transparent;
+   width: 250px;
+   height: 200px;
+   border-radius: 10px;
+   color: white;
+   font-size: 25px;
+   padding: 10px;
+   background-color: #af0404;
+   margin-left: auto;
+   margin-right: 10px;
+ }
+ .back-btn{
+   float: right;
+   margin-right: 10px;
+   margin-bottom: 10px;
+ }
+
   body{
     background-color:#414141
   }
