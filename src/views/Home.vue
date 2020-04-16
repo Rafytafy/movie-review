@@ -11,7 +11,7 @@
     </div>
     <div id="admin" v-if="this.mode == 'createReview'">
       <span>
-        <createReviewComp />
+        <createReviewComp v-bind:userName="this.curr_user.userName" />
         <button class="back-btn" @click="home()">Back</button>
       </span>
     </div>

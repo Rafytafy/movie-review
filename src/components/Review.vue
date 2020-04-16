@@ -16,11 +16,9 @@
       <b-form-input id="year" v-model="year" placeholder="Enter year of movie"></b-form-input>
     </div>
     <br><br>
-
     <h3>Rating</h3>
     <b-form-select class="movie-rating" v-model="ratingSelected" :options="rating"></b-form-select>
     <br> <br> <br> <br>
-
     <h3>Review</h3>
     <b-form-textarea
     id="textarea-rows"
@@ -32,12 +30,14 @@
   <br>
   <button @click="onSubmit"> Submit </button>
   <button class="reset" @click="onReset" > Reset </button>
+
   </div>
 </template>
 
 <script>
   export default {
     name: 'create_review_comp',
+    props:['userName'],
     data() {
       return {
         path: "http://localhost:5000",
@@ -98,7 +98,7 @@
           data: {
             header: "insert",
             table: "movies",
-            content: movieData
+            content: this.movieData
           }
         })
         //next insert into review table
@@ -109,8 +109,7 @@
         this.reviewData.movieRating = this.ratingSelected
         this.reviewData.movieGenre = this.genre
         this.reviewData.movieYear = this.year
-        //How do I access the current user?
-        this.reviewData.movieAuthor =
+        this.reviewData.movieAuthor = this.userName
 
         axios({
           method: "post",
@@ -121,7 +120,7 @@
           data: {
             header: "insert",
             table: "reviews",
-            content: reviewData
+            content: this.reviewData
           }
         })
 
