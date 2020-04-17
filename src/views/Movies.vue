@@ -7,12 +7,7 @@
     :current-page="currentPage"
     @row-clicked="movieSelected"
     >
-    <template v-slot:cell(movie)="data">
-        <!-- `data.value` is the value after formatted by the Formatter -->
-        <router-link :to="`/movieInfo/${data.value}`">
-          {{ data.value }}
-        </router-link>
-      </template>
+    
     </b-table>
 
     <b-pagination
@@ -106,7 +101,7 @@ import axios from "axios";
       console.log(record)
     }
   }
-}
+};
 </script>
 
 <style>
