@@ -11,23 +11,27 @@
     </div>
     <div id="admin" v-if="this.mode == 'createReview'">
       <span>
-        <createReviewComp v-bind:userName="this.curr_user.userName" />
+        <createReviewComp v-bind:curr_user="this.curr_user" />
         <button class="back-btn" @click="home()">Back</button>
       </span>
     </div>
     <div id="admin" v-if="this.mode == 'editReview'">
-      <span></span>
+      <span>
+        <editReviewComp v-bind:curr_user="this.curr_user" />
+      </span>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import createReviewComp from "@/components/Review";
+import createReviewComp from "@/components/Review.vue";
+import editReviewComp from "@/components/EditReview.vue";
 export default {
   name: "Home",
   components: {
-    createReviewComp
+    createReviewComp,
+    editReviewComp
   },
   data() {
     return {
