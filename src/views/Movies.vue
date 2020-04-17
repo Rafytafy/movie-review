@@ -7,7 +7,7 @@
     :current-page="currentPage"
     @row-clicked="movieSelected"
     >
-    
+
     </b-table>
 
     <b-pagination
@@ -17,6 +17,10 @@
       :per-page="perPage"
       aria-controls="table"
     ></b-pagination>
+
+    <h4>Selected Movie: {{this.selectedRow.Title}}</h4>
+    <h4>Review Author: {{this.selectedRow.Author}}</h4>
+    <p>{{this.selectedRow.Review}}</p>
   </div>
 </template>
 
@@ -30,6 +34,15 @@ import axios from "axios";
         path: "http://localhost:5000",
         perPage: 3,
         currentPage: 1,
+        selectedRow: {
+          Author: null,
+          Date: null,
+          Genre: null,
+          Rating: null,
+          ReleaseYear: null,
+          Review: null,
+          Title: null
+        },
         movies: [
         ],
         fields:[
@@ -102,6 +115,9 @@ import axios from "axios";
   },
   methods:{
     movieSelected(record, index){
+      this.selectedRow.Author = record.Author
+      this.selectedRow.Title = record.Title
+      this.selectedRow.Review = record.Review
       console.log('row clicked')
       console.log(record)
     }
