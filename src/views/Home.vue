@@ -18,6 +18,7 @@
     <div id="admin" v-if="this.mode == 'editReview'">
       <span>
         <editReviewComp v-bind:curr_user="this.curr_user" />
+        <button class="back-btn" @click="home()">Back</button>
       </span>
     </div>
   </div>
