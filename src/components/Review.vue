@@ -37,7 +37,7 @@
 <script>
   export default {
     name: 'create_review_comp',
-    props:['userName'],
+    props:['curr_user'],
     data() {
       return {
         path: "http://localhost:5000",
@@ -109,7 +109,7 @@
         this.reviewData.movieRating = this.ratingSelected
         this.reviewData.movieGenre = this.genre
         this.reviewData.movieYear = this.year
-        this.reviewData.movieAuthor = this.userName
+        this.reviewData.movieAuthor = this.curr_user.userName
 
         axios({
           method: "post",

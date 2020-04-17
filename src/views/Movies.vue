@@ -24,6 +24,7 @@ export default {
     return {
       perPage: 3,
       currentPage: 1,
+      //movies is hard coded, movies should be pulled from database
       movies: [
         { movie: "Pulp Fiction", genre: "Drama/Crime", year: 1994, score: 0 },
         { movie: "The GodFather", genre: "Drama/Crime", year: 1972, score: 0 },
@@ -67,6 +68,12 @@ export default {
   computed: {
     rows() {
       return this.movies.length;
+    }
+  },
+  //created runs when page loads
+  created: {
+    getMovieReview() {
+      //Make a call to backend to retrieve the movie reviews
     }
   }
 };
