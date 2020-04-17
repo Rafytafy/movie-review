@@ -7,6 +7,60 @@
       <span>
         <button class="home-btn" @click="createReview()">Create a Review</button>
         <button class="home-btn" @click="editReview()">Edit/Delete Review</button>
+        <br />
+        <br />
+        <table id="hometable">
+          <tr>
+            <th>Top Ten Best Movies</th>
+            <th>Genre</th>
+          </tr>
+          <tr>
+            <td>Movie 1</td>
+            <td>Genre 1</td>
+          </tr>
+          <tr>
+            <td>Movie 2</td>
+            <td>Genre 2</td>
+          </tr>
+          <tr>
+            <td>Movie 3</td>
+            <td>Genre 3</td>
+          </tr>
+          <tr>
+            <td>Movie 4</td>
+            <td>Genre 4</td>
+          </tr>
+          <tr>
+            <td>Movie 5</td>
+            <td>Genre 5</td>
+          </tr>
+        </table>
+        <table id="hometable">
+          <tr>
+            <th>Top Ten Worst Movies</th>
+            <th>Genre</th>
+          </tr>
+          <tr>
+            <td>Movie 1</td>
+            <td>Genre 1</td>
+          </tr>
+          <tr>
+            <td>Movie 2</td>
+            <td>Genre 2</td>
+          </tr>
+          <tr>
+            <td>Movie 3</td>
+            <td>Genre 3</td>
+          </tr>
+          <tr>
+            <td>Movie 4</td>
+            <td>Genre 4</td>
+          </tr>
+          <tr>
+            <td>Movie 5</td>
+            <td>Genre 5</td>
+          </tr>
+        </table>
       </span>
     </div>
     <div id="admin" v-if="this.mode == 'createReview'">
@@ -21,60 +75,8 @@
         <button class="back-btn" @click="home()">Back</button>
       </span>
     </div>
-    <br />
-    <br />
-    <table id="hometable">
-      <tr>
-        <th>Top Ten Best Movies</th>
-        <th>Genre</th>
-      </tr>
-      <tr>
-        <td>Movie 1</td>
-        <td>Genre 1</td>
-      </tr>
-      <tr>
-        <td>Movie 2</td>
-        <td>Genre 2</td>
-      </tr>
-      <tr>
-        <td>Movie 3</td>
-        <td>Genre 3</td>
-      </tr>
-      <tr>
-        <td>Movie 4</td>
-        <td>Genre 4</td>
-      </tr>
-      <tr>
-        <td>Movie 5</td>
-        <td>Genre 5</td>
-      </tr>
-    </table>
-    <table id="hometable">
-      <tr>
-        <th>Top Ten Worst Movies</th>
-        <th>Genre</th>
-      </tr>
-      <tr>
-        <td>Movie 1</td>
-        <td>Genre 1</td>
-      </tr>
-      <tr>
-        <td>Movie 2</td>
-        <td>Genre 2</td>
-      </tr>
-      <tr>
-        <td>Movie 3</td>
-        <td>Genre 3</td>
-      </tr>
-      <tr>
-        <td>Movie 4</td>
-        <td>Genre 4</td>
-      </tr>
-      <tr>
-        <td>Movie 5</td>
-        <td>Genre 5</td>
-      </tr>
-    </table>
+
+
   </div>
 </template>
 
