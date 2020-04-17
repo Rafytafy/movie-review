@@ -2,8 +2,10 @@
   <div id="table">
     <b-table  striped hover
     :items="movies"
+    :fields="fields"
     :per-page="perPage"
     :current-page="currentPage"
+    @row-clicked="movieSelected"
     >
     <template v-slot:cell(movie)="data">
         <!-- `data.value` is the value after formatted by the Formatter -->
@@ -24,30 +26,42 @@
 </template>
 
 <script>
+import axios from "axios";
   export default {
     name: "Movies",
     data() {
       return {
+        path: "http://localhost:5000",
         perPage: 3,
         currentPage: 1,
-        //movies is hard coded, movies should be pulled from database
         movies: [
-          { movie: 'Pulp Fiction', genre: 'Drama/Crime', year: 1994, score: 0 },
-          { movie: 'The GodFather', genre: 'Drama/Crime', year: 1972, score: 0 },
-          { movie: 'Scarface', genre: 'Drama/Crime', year: 1983, score: 0 },
-          { movie: 'Forest Gump', genre: 'Drama/Magical Realism', year: 1994, score: 0 },
-          { movie: 'Pulp Fiction', genre: 'Drama/Crime', year: 1994, score: 0 },
-          { movie: 'The GodFather', genre: 'Drama/Crime', year: 1972, score: 0 },
-          { movie: 'Scarface', genre: 'Drama/Crime', year: 1983, score: 0 },
-          { movie: 'Forest Gump', genre: 'Drama/Magical Realism', year: 1994, score: 0 },
-          { movie: 'Pulp Fiction', genre: 'Drama/Crime', year: 1994, score: 0 },
-          { movie: 'The GodFather', genre: 'Drama/Crime', year: 1972, score: 0 },
-          { movie: 'Scarface', genre: 'Drama/Crime', year: 1983, score: 0 },
-          { movie: 'Forest Gump', genre: 'Drama/Magical Realism', year: 1994, score: 0 },
-          { movie: 'Pulp Fiction', genre: 'Drama/Crime', year: 1994, score: 0 },
-          { movie: 'The GodFather', genre: 'Drama/Crime', year: 1972, score: 0 },
-          { movie: 'Scarface', genre: 'Drama/Crime', year: 1983, score: 0 },
-          { movie: 'Forest Gump', genre: 'Drama/Magical Realism', year: 1994, score: 0 }
+        ],
+        fields:[
+          {
+            key: 'Title',
+            label: 'Title'
+          },
+          {
+            key: 'Genre',
+            label: 'Genre'
+          },
+          {
+            key: 'Release Year',
+            label: 'Released'
+          },
+          {
+            key: 'Rating',
+            label: 'Score'
+          },
+          {
+            key: 'Author',
+            label: 'Review Author'
+          },
+          {
+            key: 'Date',
+            label: 'Date-Published'
+          },
+
         ]
       }
     },
@@ -57,11 +71,40 @@
       }
     },
     //created runs when page loads
-    created: {
-      getMovieReview()
+    created()
       {
-        //Make a call to backend to retrieve the movie reviews
-      }
+        axios({
+          method: "post",
+          url: this.path,
+          headers: {
+            "Content-type": "application/json"
+          },
+          data: {
+            header: "fetch",
+            table: "reviews",
+            content: ""
+          }
+        }).then(res => {
+          // this.movies = res.data.content;
+          for (let item in res.data.content) {
+            let movieEntry={
+              'Title': res.data.content[item].movieTitle,
+              'Genre': res.data.content[item].movieGenre,
+              'Release Year': res.data.content[item].movieYear,
+              'Rating': res.data.content[item].movieRating,
+              'Author': res.data.content[item].movieAuthor,
+              'Date': res.data.content[item].movieDate,
+              'Review': res.data.content[item].movieReview,
+              }
+            this.movies.push(movieEntry);
+          }
+        });
+  },
+  methods:{
+    movieSelected(record, index){
+      console.log('row clicked')
+      console.log(record)
+    }
   }
 }
 </script>
@@ -73,7 +116,10 @@
     width: 1250px;
     margin-left:auto;
     margin-right:auto;
+    color:white;
   }
-
+ td,th {
+  color:white;
+}
 
 </style>

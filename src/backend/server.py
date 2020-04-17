@@ -33,15 +33,14 @@ def handle_requests():
             return db.db_insert(request.json)
 
         if request.json['header']  == 'update':
-            db.db_update(request.json)
+            db.db_update(request.json)        
+        
+        if request.json['header']  == 'fetch':
+            return db.db_search(request.json)
 
         return str(request.method)
 
     if request.method == 'GET':
-
-        if request.json['header']  == 'search':
-            db.db_search
-
         return str(request.method)
 
 # This actually runs the server, it's on port 5000, which is a separate port from the vue frontend, since we can't run

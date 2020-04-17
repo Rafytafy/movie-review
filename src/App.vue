@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <h3 id="currentLogin">Currently Logged in as, {{userData.userName}}</h3>
     <div id="nav">
       <router-link to="/">Login</router-link>
       <router-link to="/user" class="router-link-active">Home</router-link>
@@ -13,7 +14,11 @@ export default {
   name: "App",
   data: function() {
     return {
-      userData: ""
+      userData: {
+        userName: "Admin",
+        reviews: null,
+        movies: null
+      }
     };
   },
   methods: {
@@ -50,5 +55,11 @@ and a dark red -> #af0404.
 }
 body {
   background-color: #414141;
+}
+#currentLogin{
+  float:left;
+  margin-top: -50px;
+  text-emphasis: italic;
+  font-size: 18px;
 }
 </style>

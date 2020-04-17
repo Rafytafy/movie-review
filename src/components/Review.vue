@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import axios from "axios";
   export default {
     name: 'create_review_comp',
     props:['curr_user'],
@@ -84,11 +85,18 @@
         this.genre = null
       },
       onSubmit(evt){
+        //set the current date 
+        var today = new Date();
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
         //Start by inserting into movie table
         //First fill movieData obj info
         this.movieData.movieTitle = this.movie
         this.movieData.movieGenre = this.genre
         this.movieData.movieYear = this.year
+        console.log('movie data is: ');
+        console.log(this.movieData);
         axios({
           method: "post",
           url: this.path,
@@ -100,16 +108,22 @@
             table: "movies",
             content: this.movieData
           }
-        })
+
+        }).then(res => {
+        console.log(res);
+      });
         //next insert into review table
         //fill reviewData info
-        this.reviewData.movieTitle = this.movies
+        this.reviewData.movieTitle = this.movie
         this.reviewData.movieReview = this.reviewText
         this.reviewData.movieComments = null
         this.reviewData.movieRating = this.ratingSelected
         this.reviewData.movieGenre = this.genre
         this.reviewData.movieYear = this.year
         this.reviewData.movieAuthor = this.curr_user.userName
+        this.reviewData.movieDate = date
+        console.log('review data is: ');
+        console.log(this.reviewData);
 
         axios({
           method: "post",
@@ -122,7 +136,11 @@
             table: "reviews",
             content: this.reviewData
           }
-        })
+        }).then(res => {
+        console.log(res);
+      });
+
+        this.onReset();
 
       }
     }
@@ -132,8 +150,7 @@
 
 <style>
 
-  #
-  div {
+  #div {
     text-align: center;
   }
   button{
