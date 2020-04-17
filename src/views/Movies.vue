@@ -24,6 +24,7 @@
 import axios from "axios";
   export default {
     name: "Movies",
+    props:['curr_user'],
     data() {
       return {
         path: "http://localhost:5000",
@@ -68,6 +69,10 @@ import axios from "axios";
     //created runs when page loads
     created()
       {
+        if(this.curr_user.userName == "Admin"){
+        alert('You must sign in before you can leave the Login page');
+        this.$router.push("/");
+      }
         axios({
           method: "post",
           url: this.path,

@@ -3,66 +3,29 @@
     <h2>
       <em>Home</em>
     </h2>
-    <div id="Home" v-if="this.mode == 'Home'">
+    <div id="Home" v-if="this.mode == 'user'">
       <span>
         <button class="home-btn" @click="createReview()">Create a Review</button>
         <button class="home-btn" @click="editReview()">Edit/Delete Review</button>
+      
         <br />
         <br />
-        <table id="hometable">
-          <tr>
-            <th>Top Ten Best Movies</th>
-            <th>Genre</th>
-          </tr>
-          <tr>
-            <td>Movie 1</td>
-            <td>Genre 1</td>
-          </tr>
-          <tr>
-            <td>Movie 2</td>
-            <td>Genre 2</td>
-          </tr>
-          <tr>
-            <td>Movie 3</td>
-            <td>Genre 3</td>
-          </tr>
-          <tr>
-            <td>Movie 4</td>
-            <td>Genre 4</td>
-          </tr>
-          <tr>
-            <td>Movie 5</td>
-            <td>Genre 5</td>
-          </tr>
-        </table>
-        <table id="hometable">
-          <tr>
-            <th>Top Ten Worst Movies</th>
-            <th>Genre</th>
-          </tr>
-          <tr>
-            <td>Movie 1</td>
-            <td>Genre 1</td>
-          </tr>
-          <tr>
-            <td>Movie 2</td>
-            <td>Genre 2</td>
-          </tr>
-          <tr>
-            <td>Movie 3</td>
-            <td>Genre 3</td>
-          </tr>
-          <tr>
-            <td>Movie 4</td>
-            <td>Genre 4</td>
-          </tr>
-          <tr>
-            <td>Movie 5</td>
-            <td>Genre 5</td>
-          </tr>
-        </table>
+    <b-table id="hometable"
+     striped hover
+    :items="movies"
+    :fields="fields"
+    @row-clicked="movieSelected"
+    />
+
+    <b-table id="hometable"
+     striped hover
+    :items="movies"
+    :fields="fields"
+    @row-clicked="movieSelected"
+    />
       </span>
     </div>
+
     <div id="admin" v-if="this.mode == 'createReview'">
       <span>
         <createReviewComp v-bind:curr_user="this.curr_user" />
@@ -84,19 +47,74 @@
 import axios from "axios";
 import createReviewComp from "@/components/Review.vue";
 import editReviewComp from "@/components/EditReview.vue";
+
 export default {
   name: "Home",
   components: {
     createReviewComp,
     editReviewComp
   },
+  props: ["curr_user"],
+  created(){
+    if (this.curr_user.userName != "Admin") {
+      this.mode = "user";
+    }
+    else{
+      if(this.curr_user.userName == "Admin"){
+        alert('You must sign in before you can leave the Login page');
+        this.$router.push("/");
+      }
+    }
+    
+        axios({
+          method: "post",
+          url: this.path,
+          headers: {
+            "Content-type": "application/json"
+          },
+          data: {
+            header: "fetch",
+            table: "reviews",
+            content: ""
+          }
+        }).then(res => {
+          // this.movies = res.data.content;
+          for (let item in res.data.content) {
+            let movieEntry={
+              'Title': res.data.content[item].movieTitle,
+              'Genre': res.data.content[item].movieGenre,
+              'Release Year': res.data.content[item].movieYear,
+              'Rating': res.data.content[item].movieRating,
+              'Author': res.data.content[item].movieAuthor,
+              'Date': res.data.content[item].movieDate,
+              'Review': res.data.content[item].movieReview,
+              }
+              if(this.movies.length <= 10){
+            this.movies.push(movieEntry);
+              }
+          }
+        });
+  },
   data() {
     return {
       path: "http://localhost:5000",
-      mode: "Home"
+      mode: "",
+      movies:[],
+      fields:[
+          {
+            key: 'Title',
+            label: 'Title'
+          },
+         
+          {
+            key: 'Rating',
+            label: 'Score'
+          },
+          
+
+        ]
     };
   },
-  props: ["curr_user"],
   methods: {
     createReview() {
       this.mode = "createReview";
@@ -105,19 +123,11 @@ export default {
       this.mode = "editReview";
     },
     home() {
-      this.mode = "Home";
+      this.mode = "user";
     },
-    postMessage() {
-      axios({
-        method: "post",
-        url: this.path,
-        headers: {
-          "Content-type": "application/json"
-        },
-        data: {}
-      }).then(res => {
-        console.log(res);
-      });
+   movieSelected(record, index){
+      console.log('row clicked')
+      console.log(record)
     }
   }
 };
@@ -167,7 +177,7 @@ body {
   border-radius: 10px solid black;
   border-radius: 10px;
   border-top: 1px solid white;
-  color: darkgray;
+  color: white;
 }
 #class {
   border-collapse: collapse;
