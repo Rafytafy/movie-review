@@ -18,6 +18,60 @@
     <div id="admin" v-if="this.mode == 'editReview'">
       <span></span>
     </div>
+    <br />
+    <br />
+    <table id="hometable">
+      <tr>
+        <th>Top Ten Best Movies</th>
+        <th>Genre</th>
+      </tr>
+      <tr>
+        <td>Movie 1</td>
+        <td>Genre 1</td>
+      </tr>
+      <tr>
+        <td>Movie 2</td>
+        <td>Genre 2</td>
+      </tr>
+      <tr>
+        <td>Movie 3</td>
+        <td>Genre 3</td>
+      </tr>
+      <tr>
+        <td>Movie 4</td>
+        <td>Genre 4</td>
+      </tr>
+      <tr>
+        <td>Movie 5</td>
+        <td>Genre 5</td>
+      </tr>
+    </table>
+    <table id="hometable">
+      <tr>
+        <th>Top Ten Worst Movies</th>
+        <th>Genre</th>
+      </tr>
+      <tr>
+        <td>Movie 1</td>
+        <td>Genre 1</td>
+      </tr>
+      <tr>
+        <td>Movie 2</td>
+        <td>Genre 2</td>
+      </tr>
+      <tr>
+        <td>Movie 3</td>
+        <td>Genre 3</td>
+      </tr>
+      <tr>
+        <td>Movie 4</td>
+        <td>Genre 4</td>
+      </tr>
+      <tr>
+        <td>Movie 5</td>
+        <td>Genre 5</td>
+      </tr>
+    </table>
   </div>
 </template>
 
@@ -91,5 +145,46 @@ export default {
 
 body {
   background-color: #414141;
+}
+#hometable {
+  display: inline;
+  border-collapse: collapse;
+  padding: 40px;
+  border-radius: 10px solid black;
+  border-radius: 10px;
+}
+
+#hometable td {
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px solid black;
+  border-radius: 10px;
+  border-top: 1px solid white;
+  color: darkgray;
+}
+#class {
+  border-collapse: collapse;
+  width: 60%;
+}
+
+#hometable th {
+  text-align: center;
+  background-color: #af0404;
+  padding: 40px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: center;
+  padding: 10px;
+}
+#hometable th:first-child {
+  border-radius: 10px 0 0 0;
+}
+
+#hometable th:last-child {
+  border-radius: 0 10px 0 0;
+}
+
+#hometable th:only-child {
+  border-radius: 10px 10px 0 0;
 }
 </style>
