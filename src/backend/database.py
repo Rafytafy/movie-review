@@ -100,7 +100,6 @@ def db_search(obj):
         #loop through the table and update the keys in the package to resend to the front end.
         for key in ans:
             obj['content'].append({'userName':key[0],'review':key[1],'movies':key[2]})
-        print(obj)
         # we return the modified object to be sent to the frontend in response. Look at admin.vues axios post response.
         return obj 
 
@@ -112,7 +111,6 @@ def db_search(obj):
         #loop through the table and update the keys in the package to resend to the front end.
         for key in ans:
             obj['content'].append({'movieTitle':key[0],'movieGenre':key[1],'movieYear':key[2]})
-        print(obj)
         # we return the modified object to be sent to the frontend in response. Look at admin.vues axios post response.
         return obj 
     
@@ -135,7 +133,31 @@ def db_search(obj):
                     'movieDate':key[7]
                     }
             )
-        print(obj)
+        # we return the modified object to be sent to the frontend in response. Look at admin.vues axios post response.
+        return obj 
+
+    if obj['table'] == 'getUserReviews':
+        user = obj['user']
+        print(user)
+        crsr.execute("""SELECT * FROM reviews WHERE year = ? """, (user,)) #I screwed up and mapped year to author, ignore it and it runs fine.
+        ans=crsr.fetchall()
+        obj['header'] = 'emit'
+        obj['content'] = [] #create a list to be filled with dictionaries that correspond to user entries in the table.
+        #loop through the table and update the keys in the package to resend to the front end.
+        for key in ans:
+            obj['content'].append(
+                 {
+                    'movieTitle':key[0],
+                    'movieReview':key[1],
+                    'movieComments':key[2],
+                    'movieRating':key[3],
+                    'movieGenre': key[4],
+                    'movieAuthor':key[5],
+                    'movieYear':key[6],
+                    'movieDate':key[7]
+                    }
+            )
+            print(obj['content'])
         # we return the modified object to be sent to the frontend in response. Look at admin.vues axios post response.
         return obj 
 
@@ -168,7 +190,6 @@ def db_insert(obj):
             ) 
 
         ]
-            print(tbl_insrt)
             crsr.executemany("INSERT INTO users (user_name,reviews,movies) VALUES (?,?,?);", tbl_insrt)  
             crsr.execute("""SELECT * FROM users""")
             ans=crsr.fetchall()
@@ -176,8 +197,7 @@ def db_insert(obj):
             obj['content'] = [] #create a list to be filled with dictionaries that correspond to user entries in the table.
             #loop through the table and update the keys in the package to resend to the front end.
             for key in ans:
-                obj['content'].append({'userName':key[0],'review':key[1],'movies':key[2]})
-            print(obj)
+                obj['content'].append({'userName':key[0],'reviews':key[1],'movies':key[2]})
             # we return the modified object to be sent to the frontend in response. Look at admin.vues axios post response.
             return obj 
         except sqlite3.IntegrityError as e:
@@ -199,7 +219,6 @@ def db_insert(obj):
             ) 
 
         ]
-            print(tbl_insrt)
             crsr.executemany("INSERT INTO movies (movie_name,genre,year) VALUES (?,?,?);", tbl_insrt)  
             crsr.execute("""SELECT * FROM movies""")
             ans=crsr.fetchall()
@@ -208,7 +227,6 @@ def db_insert(obj):
             #loop through the table and update the keys in the package to resend to the front end.
             for key in ans:
                 obj['content'].append({'movieTitle':key[0],'movieGenre':key[1],'movieYear':key[2]})
-            print(obj)
             # we return the modified object to be sent to the frontend in response. Look at admin.vues axios post response.
             return obj 
         except sqlite3.IntegrityError as e:
@@ -235,7 +253,6 @@ def db_insert(obj):
             ) 
 
         ]
-            print(tbl_insrt)
             crsr.executemany("INSERT INTO reviews (movie_name,review_text,comments,rating,genre,year,author,date_posted) VALUES (?,?,?,?,?,?,?,?);", tbl_insrt)  
             crsr.execute("""SELECT * FROM reviews""")
             ans=crsr.fetchall()
@@ -255,7 +272,6 @@ def db_insert(obj):
                     'movieDate':key[7]
                     }
                     )
-            print(obj)
             # we return the modified object to be sent to the frontend in response. Look at admin.vues axios post response.
             return obj 
         except sqlite3.IntegrityError as e:

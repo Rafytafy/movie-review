@@ -7,19 +7,28 @@
       <span>
         <button class="home-btn" @click="createReview()">Create a Review</button>
         <button class="home-btn" @click="editReview()">Edit/Delete Review</button>
-      
+        <button class="home-btn" @click="getUserMovies()">View your Movies</button>
+    <br />
         <br />
         <br />
+
+    <label for="best movies"> Best and Worst Reviewed Movies</label><br>
     <b-table id="hometable"
      striped hover
     :items="movies"
+    :sort-by="sortBy"    
+    :sort-desc="true"
+    :no-sort-reset="true"
     :fields="fields"
     @row-clicked="movieSelected"
     />
 
+    
     <b-table id="hometable"
      striped hover
     :items="movies"
+    :sort-by="sortBy"
+    :no-sort-reset="true"
     :fields="fields"
     @row-clicked="movieSelected"
     />
@@ -78,7 +87,7 @@ export default {
             content: ""
           }
         }).then(res => {
-          // this.movies = res.data.content;
+          // res.data.content.sort((a, b) => a.movieRating - b.movieRating);
           for (let item in res.data.content) {
             let movieEntry={
               'Title': res.data.content[item].movieTitle,
@@ -90,15 +99,34 @@ export default {
               'Review': res.data.content[item].movieReview,
               }
               if(this.movies.length <= 10){
-            this.movies.push(movieEntry);
+                   this.movies.push(movieEntry);
               }
           }
         });
+
+        axios({
+          method: "post",
+          url: this.path,
+          headers: {
+            "Content-type": "application/json"
+          },
+          data: {
+            header: "fetch",
+            table: "getUserReviews",
+            user: this.curr_user.userName,
+            content: ""
+          }
+        }).then(res => {
+          //set the current users movie content
+          this.curr_user.reviews = res.data.content 
+        });
+        console.log(this.curr_user)
   },
   data() {
     return {
       path: "http://localhost:5000",
       mode: "",
+      sortBy:'Rating',
       movies:[],
       fields:[
           {
@@ -110,6 +138,7 @@ export default {
             key: 'Rating',
             label: 'Score'
           },
+          
           
 
         ]
@@ -124,10 +153,16 @@ export default {
     },
     home() {
       this.mode = "user";
+      this.movies.sort((a, b) => a.movieRating - b.movieRating);
+      console.log(this.movies)
     },
    movieSelected(record, index){
       console.log('row clicked')
       console.log(record)
+    },
+    getUserMovies(){
+      this.$emit('user-movies',this.curr_user)
+      this.$router.push('/movieInfo')
     }
   }
 };

@@ -1,73 +1,105 @@
 <template>
-  <div>
-    <div v-if="!isDeleted && mode === 'Home'">
-      {{ selectedMovie }}
-      <div class="text">
-        <h1>Genre</h1>
-        <h3>Thriller</h3>
-        <br />
-        <h1>Year</h1>
-        <p1>1994</p1>
-        <br />
-        <h1>Score</h1>
-        <h3>5</h3>
-        <br />
-        <h1>Review</h1>
-        <h3>Date</h3>
-        <p1>April 15, 2020</p1>
-        <br />
-        <p1>Review goes here</p1>
-        <br />
-        <!-- Check to see if current user is set
-        If set then button will appear to edit or delete review-->
-        <button v-if="curr_user" @click="editMovie()">Edit Review</button>
-        <button v-if="curr_user" @click="deleteMovie()">Delete Review</button>
-      </div>
-    </div>
-    <div v-if="isDeleted">
-      <h1>MOVIE REVIEW DELETED</h1>
-    </div>
-    <div v-if="mode == 'editReview'">
-      <createReviewComp v-bind:curr_user="this.curr_user" />
+  <div id="table">
+    <b-table
+      striped
+      hover
+      :items="movies"
+      :fields="fields"
+      :per-page="perPage"
+      :current-page="currentPage"
+      @row-clicked="movieSelected"
+    ></b-table>
+
+    <b-pagination
+      class="pagination"
+      v-model="currentPage"
+      :total-rows="this.movies.length"
+      :per-page="perPage"
+      aria-controls="table"
+    ></b-pagination>
+    <div v-if="rowSelected">
+      <h4>Selected Movie: {{this.selectedRow.Title}}</h4>
+      <h4>Review Author: {{this.selectedRow.Author}}</h4>
+      <p>{{this.selectedRow.Review}}</p>
     </div>
   </div>
 </template>
 
 <script>
-import createReviewComp from "@/components/Review.vue";
-
 export default {
   name: "MovieInfo",
-  components: {
-    createReviewComp
-  },
+
   data() {
     return {
-      path: "http://localhost:5000",
-      mode: "Home",
-      isDeleted: false,
-      selectedMovie: this.$route.params.movie,
-      //movieReview holds values related to the currently selected review
-      movieReview: {}
+      perPage: 3,
+      currentPage: 1,
+      rowSelected: false,
+      selectedRow: {
+        Author: null,
+        Date: null,
+        Genre: null,
+        Rating: null,
+        ReleaseYear: null,
+        Review: null,
+        Title: null
+      },
+      movies: [],
+      fields: [
+        {
+          key: "Title",
+          label: "Title"
+        },
+        {
+          key: "Genre",
+          label: "Genre"
+        },
+        {
+          key: "Release Year",
+          label: "Released"
+        },
+        {
+          key: "Rating",
+          label: "Score"
+        },
+        {
+          key: "Author",
+          label: "Review Author"
+        },
+        {
+          key: "Date",
+          label: "Date-Published"
+        }
+      ]
     };
   },
-  props: ["curr_user"],
-  methods: {
-    deleteMovie() {
-      this.isDeleted = true;
-      //Write logic to delete review entry in database
+    props: ["curr_user"],
+    created() {
+      if (this.curr_user.userName == "Admin") {
+        alert("You must sign in before you can leave the Login page");
+        this.$router.push("/");
+      }
+      
+      for (let item in this.curr_user.reviews) {
+            let movieEntry={
+              'Title': this.curr_user.reviews[item].movieTitle,
+              'Genre': this.curr_user.reviews[item].movieGenre,
+              'Release Year': this.curr_user.reviews[item].movieYear,
+              'Rating': this.curr_user.reviews[item].movieRating,
+              'Author': this.curr_user.reviews[item].movieAuthor,
+              'Date': this.curr_user.reviews[item].movieDate,
+              'Review': this.curr_user.reviews[item].movieReview,
+              }
+            this.movies.push(movieEntry);
+    }
     },
-    editMovie() {
-      this.mode = "editReview";
-      //Write logic to delete review entry in data base then createReviewComp will handle inserting a new entry
+    methods: {
+      movieSelected(record, index) {
+        this.selectedRow.Author = record.Author;
+        this.selectedRow.Title = record.Title;
+        this.selectedRow.Review = record.Review;
+        this.rowSelected = true;
+      }
     }
-  },
-  //created runs when page loads
-  created: {
-    getMovieReview() {
-      //Make a call to backend to retrieve the movie review given the current user and movie
-    }
-  }
 };
 </script>
 <style>

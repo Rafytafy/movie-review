@@ -29,7 +29,7 @@ export default new Router({
       component: Movies
     },
     {
-      path: '/movieInfo/:movie',
+      path: '/movieInfo',
       name: 'MovieInfo',
       props:true,
       component: MovieInfo

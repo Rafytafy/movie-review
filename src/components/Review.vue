@@ -95,8 +95,6 @@ import axios from "axios";
         this.movieData.movieTitle = this.movie
         this.movieData.movieGenre = this.genre
         this.movieData.movieYear = this.year
-        console.log('movie data is: ');
-        console.log(this.movieData);
         axios({
           method: "post",
           url: this.path,
@@ -110,7 +108,6 @@ import axios from "axios";
           }
 
         }).then(res => {
-        console.log(res);
       });
         //next insert into review table
         //fill reviewData info
@@ -122,8 +119,6 @@ import axios from "axios";
         this.reviewData.movieYear = this.year
         this.reviewData.movieAuthor = this.curr_user.userName
         this.reviewData.movieDate = date
-        console.log('review data is: ');
-        console.log(this.reviewData);
 
         axios({
           method: "post",
@@ -137,7 +132,6 @@ import axios from "axios";
             content: this.reviewData
           }
         }).then(res => {
-        console.log(res);
       });
 
         this.onReset();

@@ -6,7 +6,7 @@
       <router-link to="/user" class="router-link-active">Home</router-link>
       <router-link to="/movies" class="router-link-active">Movies</router-link>
     </div>
-      <router-view v-on:user-selected="onSelect" v-bind:curr_user="userData"></router-view>
+    <router-view v-on:user-movies="onAddMovies"  v-on:user-selected="onSelect" v-bind:curr_user="userData"></router-view>
   </div>
 </template>
 <script>
@@ -24,8 +24,11 @@ export default {
   methods: {
     onSelect(user) {
       this.userData = user;
+    },
+    onAddMovies(user){
+      this.userData =user;
     }
-}
+  }
 };
 </script>
 
@@ -56,10 +59,22 @@ and a dark red -> #af0404.
 body {
   background-color: #414141;
 }
-#currentLogin{
-  float:left;
+#currentLogin {
+  float: left;
   margin-top: -50px;
   text-emphasis: italic;
   font-size: 18px;
+}
+#currUserBtn {
+  float: right;
+  margin-top: -50px;
+  text-emphasis: italic;
+  font-size: 18px;
+  border: 5px solid transparent;
+  border-radius: 10px;
+  color: white;
+  font-size: 20px;
+  padding: 10px;
+  background-color: #af0404;
 }
 </style>

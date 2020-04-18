@@ -17,10 +17,11 @@
       :per-page="perPage"
       aria-controls="table"
     ></b-pagination>
-
+    <div v-if="rowSelected" >
     <h4>Selected Movie: {{this.selectedRow.Title}}</h4>
     <h4>Review Author: {{this.selectedRow.Author}}</h4>
     <p>{{this.selectedRow.Review}}</p>
+    </div>
   </div>
 </template>
 
@@ -34,6 +35,7 @@ import axios from "axios";
         path: "http://localhost:5000",
         perPage: 3,
         currentPage: 1,
+        rowSelected: false,
         selectedRow: {
           Author: null,
           Date: null,
@@ -118,8 +120,7 @@ import axios from "axios";
       this.selectedRow.Author = record.Author
       this.selectedRow.Title = record.Title
       this.selectedRow.Review = record.Review
-      console.log('row clicked')
-      console.log(record)
+      this.rowSelected= true
     }
   }
 };

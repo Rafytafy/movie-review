@@ -84,7 +84,6 @@ export default {
     };
   },
   created() {
-    console.log("on admin create");
     this.currUser = this.curr_user;
     if (this.currUser.userName != "Admin") {
       this.mode = "user";
@@ -133,6 +132,7 @@ export default {
       // after we select a user, we want to change the mode to user and then redirect to the home page.
 
       this.currUser = user;
+      console.log(user);
       this.$emit("user-selected", user);
       this.mode = "user";
       this.$router.push("/user");
